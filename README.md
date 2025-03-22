@@ -1,2 +1,2 @@
-# e-bebek Product Carousel Project
-This repository contains an example of the product carousel of the e-bebek.com site.
+# Product Carousel Project - e-bebek
+This repository contains an example of the product carousel of the **www.e-bebek.com** site.
