@@ -66,6 +66,7 @@ To run the project, you must have the following software installed on your syste
 3. Open `index.html` in a browser, or serve it using Live Server for better performance.
 
 4. Add the `script.js` file to your project.
+<p align="right"><a href="#readme-top">Back to the Top ↑ </a></p>
 
 ## 📂 Project Structure
 
@@ -79,7 +80,6 @@ To run the project, you must have the following software installed on your syste
 - **HTML5:** Used for user interface structure.
 - **CSS3:** Modern CSS features like Flexbox and Grid were used for styling and layout.
 - **JavaScript (ES6+):** Used to handle user interactions and application logic.
-<p align="right"><a href="#readme-top">Back to the Top ↑ </a></p>
 
 ## ▶️ Usage
 
@@ -114,6 +114,7 @@ Each product in the products.json file follows this structure:
 ### 🔹 **Product Carousel**
 
 ![Product Carousel](screenshots/carousel.png)
+<p align="right"><a href="#readme-top">Back to the Top ↑ </a></p>
 
 ## 🎯 Additional Information
 
