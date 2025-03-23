@@ -7,8 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Wrong Page!');
         }
     };
-    
-    
+
     const loadProducts = async () => {
         const products = await getProductList();
         buildHTML(products);
@@ -55,16 +54,29 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const carouselContainer = document.createElement('div');
         carouselContainer.id = 'product-carousel';
-        carouselContainer.classList.add('carousel');
-    
+        carouselContainer.classList.add('carousel-container');
+
+        const carouselScrollable = document.createElement('div'); 
+        carouselScrollable.classList.add('carousel-scrollable');
+        carouselContainer.appendChild(carouselScrollable);
+
+        const prevButton = document.createElement('button'); 
+        prevButton.classList.add('carousel-button', 'prev');
+        prevButton.innerHTML = '&#8249;';
+        carouselContainer.appendChild(prevButton);
+
+        const nextButton = document.createElement('button'); 
+        nextButton.classList.add('carousel-button', 'next');
+        nextButton.innerHTML = '&#8250;'; 
+        carouselContainer.appendChild(nextButton);
+
         const productListContainer = document.createElement('div');
         productListContainer.classList.add('product-list');
         
         products.forEach(product => {
-            productListContainer.appendChild(createProductCard(product));
+            const productCard = createProductCard(product);
+            carouselScrollable.appendChild(productCard);
         });
-        
-        carouselContainer.appendChild(productListContainer);
         bannerContainer.appendChild(carouselContainer);
     
         const storiesElement = document.querySelector('#stories');
@@ -78,12 +90,19 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             document.body.appendChild(bannerContainer);
         }
+        return [storiesContainer, bannerContainer];
+        
     };
     
     const createProductCard = (product) => {
         const productCard = document.createElement('div');
         productCard.classList.add('product-card');
         productCard.dataset.productId = product.id;
+
+        let discountPercent = 0;
+        if (product.original_price && product.price < product.original_price) {
+            discountPercent = Math.round(((product.original_price - product.price) / product.original_price) * 100);
+        }
     
         productCard.innerHTML = `
             <img src="${product.img}" class="product-image">
@@ -97,12 +116,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span class="star">★</span>
                 </div>
                 <div class="discount-badge">
-                    <span class="price">${product.price} TL</span>
-                    <span class="discount-percent">%30</span>
-                    <span class="arrow-down">▼</span>
+                    ${discountPercent > 0 
+                        ? `<span class="price">${product.price}TL</span>
+                           <span class="original-price">${product.original_price} TL</span>
+                           <span class="discount-percent">%${discountPercent}</span>
+                           <span class="arrow-down">▼</span>
+                           <span class="original-price">${product.original_price} TL</span>`
+                        : `<span class="price">${product.price} TL</span>`}
                 </div>
                 <div class="product-original-price-promotion">
-                    <h3 class="product-original-price">${product.original_price} TL</h3>
+                    ${product.original_price && product.price < product.original_price
+                        ? `<h3 class="product-original-price">${product.original_price} TL</h3>` : ''}
                     <p class="product-promotion">Farklı ürünlerde 3 al 2 öde</p>
                 </div>
                 <div class="product-actions">
@@ -144,11 +168,52 @@ document.addEventListener('DOMContentLoaded', () => {
                 border-top-right-radius: 35px;
                 font-weight: 700;
             }
-            .carousel {
+            .carousel-container {
+                scroll-behavior: smooth;
                 display: flex;
                 overflow-x: auto;
+                scrollbar-width: thin;
                 padding: 10px 0;
                 margin-top: auto;
+                position: relative;
+                width: 100%;
+                overflow: visible;
+            }
+            .carousel-scrollable {
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 10px; 
+                transition: scroll-left 0.5s ease-in-out;
+            }
+            .carousel-button {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                background-color: #fff7ec;
+                color: orange;
+                border: none;
+                padding: 10px;
+                cursor: pointer;
+                font-size: 30px;
+                z-index: 10;
+                border-radius: 50px;
+                width: 40px; 
+                height: 40px; 
+                display: flex;
+                justify-content: center; 
+                align-items: center;
+            }
+            .carousel-button:hover {
+                box-shadow: 0 0 0 0 #00000030, inset 0 0 0 1px #f28e00;
+                background-color: white;
+            }
+            .carousel-button.prev {
+                left: 10px;
+            }
+            .carousel-button.next {
+                right: 10px;
             }
             .product-list {
                 display: flex;
@@ -170,6 +235,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 display: flex; 
                 flex-direction: column; 
                 transition: border-color 0.3s ease-in-out;
+                overflow: hidden;
+                flex: 0 0 auto;
+                margin-right: 10px;
+                scroll-snap-align: start;
             }
             .product-card:hover {
                 box-shadow: 0 0 0 0 #00000030, inset 0 0 0 3px #f28e00;
@@ -184,6 +253,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 display: flex;
                 flex-direction: column;
                 flex-grow: 1;
+                justify-content: space-between; /* Elementleri dikey olarak dağıt */
+                height: 100%; 
             }
             .product-title {
                 font-family: 'Poppins', sans-serif;
@@ -208,21 +279,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 align-items: flex-start;
             }
             .product-original-price {
-                font-size: 20px;
-                margin-bottom: 5; 
-                margin-right: 10px;
-                text-align: left;
-                color: #7d7d7d;
+                font-size: 14px; 
+                color: #7d7d7d; 
+                margin-right: 5px;
+                text-decoration: line-through;
+                display: inline-block; 
+                vertical-align: middle;
+                margin-top: 1px; 
             }
             .product-promotion {
-                font-size: 12px;
+                font-size: 10px;
                 color: #00a365; 
-                margin-bottom: 10px;
                 background-color: #90d8bf4a; 
                 border: none;
-                padding: 10px 15px;
+                padding: 5px 10px;
                 border-radius: 20px; 
                 text-align: left; 
+                margin-top: 1px; 
             }
             .product-actions {
                 display: flex;
@@ -239,12 +312,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 text-align: left;
                 display: flex; 
                 align-items: center; 
+                justify-content: flex-start;
+                margin-left: -5px;
+            }
+            .discount-badge span {
+                vertical-align: middle; 
             }
             .price {
-                font-size: 14px;
-                text-decoration: line-through; 
-                color: #7d7d7d; 
-                margin: 0;
+                font-size: 20px;
+                margin-bottom: 5; 
+                margin-right: 10px;
+                text-align: left;
+                color: #7d7d7d;
             }
             .discount-percent {
                 color: #00a365;
@@ -257,14 +336,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 font-weight: 700;
                 display: inline-flex;
                 justify-content: center;
+                margin-left: -20px;
             }
             .arrow-down {
                 font-size: 14px;
                 color: white;
                 background-color: #00a365;
                 border-radius: 200%;
-                padding: 0 3px;
+                padding: 0 5px;
                 font-weight: bold;
+                margin-left: -2px;
             }
             .add-to-cart-button {
                 background-color: #fff7ec; 
@@ -356,6 +437,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.open(product.url, '_blank');
             });
         });
+        // Carousel button event listener
+        const carouselScrollable = document.querySelector('.carousel-scrollable');
+        const prevButton = document.querySelector('.carousel-button.prev');
+        const nextButton = document.querySelector('.carousel-button.next');
+        const productCardWidth = 220;
+
+        console.log('carouselScrollable:', carouselScrollable);
+        console.log('prevButton:', prevButton);
+        console.log('nextButton:', nextButton);
+
+        if (prevButton && nextButton && carouselScrollable) {
+            prevButton.addEventListener('click', () => {
+                carouselScrollable.scrollLeft -= productCardWidth;
+                behavior: 'smooth';
+            });
+
+            nextButton.addEventListener('click', () => {
+                carouselScrollable.scrollLeft += productCardWidth;
+                behavior: 'smooth'
+            });
+        } else {
+            console.error('No carousel buttons or carousel Scrollable found!');
+        }
+        
     };
     
     const toggleFavorite = (productId, heartIcon) => {
@@ -373,4 +478,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
     init();
 });
-
