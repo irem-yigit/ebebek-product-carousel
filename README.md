@@ -67,6 +67,13 @@ To run the project, you must have the following software installed on your syste
 
 4. Add the `script.js` file to your project.
 
+## 📂 Project Structure
+
+    📦 product-carousel-project/
+    ├── 📄 index.html # Main HTML file
+    ├── 📄 script.js # JavaScript logic
+    └── 📄 README.md # Documentation
+
 ## 🏗️ Technologies 
 
 - **HTML5:** Used for user interface structure.
@@ -81,7 +88,7 @@ This project faithfully recreates the product carousel on the e-bebek website. U
 ## 🔗 API Information
 
 - **API URL**:
- 
+
     `https://gist.githubusercontent.com/sevindi/8bcbde9f02c1d4abe112809c974e1f49/raw/9bf93b58df623a9b16f1db721cd0a7a539296cf0/products.json`
 
 - **API Response Format**: JSON
@@ -101,13 +108,6 @@ Each product in the products.json file follows this structure:
             "original_price": 89.99
         }
     ]
-
-## 📂 Project Structure
-
-    📦 product-carousel-project/
-    ├── 📄 index.html # Main HTML file
-    ├── 📄 script.js # JavaScript logic
-    └── 📄 README.md # Documentation
 
 ## 📸 Screenshots
 
