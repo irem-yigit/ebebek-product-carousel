@@ -376,6 +376,142 @@
             .favorite-button.filled svg {
                 fill: #ff8708; 
             }
+            /* (Mobile - max 768px) */
+            @media (max-width: 768px) {
+                #banner-container {
+                    padding: 15px;
+                    max-width: 90%;
+                    margin: 10px auto;
+                }
+                .banner-title {
+                    font-size: 1.5rem;
+                    padding: 15px 20px;
+                    text-align: center;
+                    display: flex; 
+                    align-items: center;
+                    justify-content: center; 
+                }
+                .carousel-container {
+                    flex-direction: column;
+                    padding: 5px 0;
+                }
+                .carousel-button {
+                    width: 30px;
+                    height: 30px;
+                    font-size: 20px;
+                    background-color: rgba(255, 247, 236, 0.8); 
+                }
+                .carousel-scrollable::-webkit-scrollbar {
+                    display: none; 
+                }
+                .carousel-scrollable {
+                    display: flex;
+                    flex-wrap: nowrap; 
+                    -ms-overflow-style: none; 
+                    scrollbar-width: none; 
+                    scroll-behavior: smooth;
+                    -webkit-overflow-scrolling: touch;
+                }
+                .product-list {
+                    flex-direction: row;
+                    overflow-x: scroll; 
+                    scroll-snap-type: x mandatory;
+                    gap: 10px;
+                    scroll-behavior: smooth;
+                }
+                .product-card {
+                    width: 150px;
+                    margin-right: 5px;
+                    flex-shrink: 0;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                }
+                .product-image {
+                    height: auto;
+                    max-height: 200px; 
+                    object-fit: cover;
+                }
+                .product-title {
+                    font-size: clamp(10px, 2vw, 14px);
+                }
+                .product-promotion{
+                    font-size: 10px;
+                }
+                .price {
+                    font-size: 16px;
+                }
+                .discount-percent {
+                    font-size: 14px;
+                    margin-left: -10px;
+                }
+                .arrow-down {
+                    margin-left: 0; 
+                }
+                .discount-badge {
+                    margin-left: -10px; 
+                }
+                .add-to-cart-button {
+                    font-size: 12px;
+                    padding: 8px;
+                }
+                .favorite-button {
+                    width: 30px;
+                    height: 30px;
+                }
+                .favorite-button svg {
+                    width: 30px;
+                    height: 30px;
+                }
+            }
+            /* (Mobile - max 480px) */
+            @media (max-width: 480px) {
+                .banner-title {
+                    font-size: 1.2rem;
+                    padding: 10px;
+                }
+                .carousel-container {
+                    padding: 5px;
+                    margin-left: -10px;
+                    margin-right: -10px;
+                }
+                .carousel-button {
+                    width: 20px;
+                    height: 20px;
+                    font-size: 15px;
+                    background-color: rgba(255, 247, 236, 0.8); 
+                }
+                .product-card {
+                    width: 120px; 
+                }
+                .product-image {
+                    height: auto;
+                    max-height: 100px;
+                }
+                .product-title {
+                    font-size: clamp(10px, 2vw, 14px);
+                }
+                .price {
+                    font-size: 16px;
+                }
+                .discount-percent {
+                    font-size: 14px; 
+                }
+                .add-to-cart-button {
+                    font-size: 12px;
+                    padding: 8px;
+                }
+                .favorite-button {
+                    top: 5px;
+                    right: 5px;
+                    width: 25px;
+                    height: 25px;
+                }
+                .favorite-button svg {
+                    width: 20px;
+                    height: 20px;
+                }
+            }
         `;
         document.head.appendChild(style);
     };
