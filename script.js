@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+(() => {
     const init = () => {
         if (window.location.pathname === "/" || window.location.pathname.includes("index.html")) {
             console.log('Home page detected');
@@ -33,22 +33,12 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const buildHTML = (products) => {
-        const storiesContainer = document.createElement('div');
-        storiesContainer.id = 'stories';
 
-        storiesContainer.innerHTML = `
-            <div class="story">Story 1</div>
-            <div class="story">Story 2</div>
-            <div class="story">Story 3</div>
-            <div class="story">Story 4</div>
-            <div class="story">Story 5</div>
-            <div class="story">Story 6</div>
-        `;
         const bannerContainer = document.createElement('div');
         bannerContainer.id = 'banner-container';
         
         const bannerTitle = document.createElement('h2');
-        bannerTitle.textContent = 'Sizin için Seçtiklerimiz';
+        bannerTitle.textContent = 'Beğenebileceğinizi düşündüklerimiz';
         bannerTitle.classList.add('banner-title');
         bannerContainer.appendChild(bannerTitle);
         
@@ -79,19 +69,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         bannerContainer.appendChild(carouselContainer);
     
-        const storiesElement = document.querySelector('#stories');
-        if (!storiesElement) {
-            document.body.appendChild(storiesContainer); 
+        const heroBanner = document.querySelector("eb-hero-banner-carousel");
+        if (heroBanner) {
+            heroBanner.insertAdjacentElement("afterend", bannerContainer);
         }
-      
-        const carouselElement = document.querySelector('#product-carousel');
-        if (carouselElement) {
-            carouselElement.before(bannerContainer);
-        } else {
-            document.body.appendChild(bannerContainer);
-        }
-        return [storiesContainer, bannerContainer];
-        
+        return [bannerContainer];
     };
     
     const createProductCard = (product) => {
@@ -394,25 +376,6 @@ document.addEventListener('DOMContentLoaded', () => {
             .favorite-button.filled svg {
                 fill: #ff8708; 
             }
-            #stories {
-                display: flex;
-                overflow-x: auto;
-                padding: 10px 0;
-                gap: 10px;
-                margin-bottom: 20px; 
-                justify-content: center; 
-                align-items: center;
-            }
-            .story {
-                width: 80px;
-                height: 80px;
-                border-radius: 50%;
-                background-color: #eee;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-size: 12px;
-            }
         `;
         document.head.appendChild(style);
     };
@@ -477,4 +440,4 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     init();
-});
+})();
