@@ -111,9 +111,8 @@ Each product in the products.json file follows this structure:
 
 ## 📸 Screenshots
 
-### 🔹 **Product Carousel**
-
-![Product Carousel](screenshots/carousel.png)
+### **Product Carousel**
+![product-carousel](https://github.com/user-attachments/assets/89b7ba0f-33e4-404b-b32e-ab475564808a)
 <p align="right"><a href="#readme-top">Back to the Top ↑ </a></p>
 
 ## 🎯 Additional Information
