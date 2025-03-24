@@ -111,18 +111,18 @@
                 <!-- Display discount -->
                 <div class="discount-badge">
                     ${discountPercent > 0 
-                        ? `<span class="price">${product.price}TL</span>
+                        ? ` ${product.original_price && product.price < product.original_price
+                        ? `<h3 class="product-original-price">${product.original_price}TL</h3>` : ''}
                            <span class="original-price">${product.original_price} TL</span>
                            <span class="discount-percent">%${discountPercent}</span>
                            <span class="arrow-down">▼</span>
                            <span class="original-price">${product.original_price} TL</span>`
-                        : `<span class="price">${product.price} TL</span>`}
+                        : ``}
                 </div>
 
                 <!-- Display original price and promotion -->
                 <div class="product-original-price-promotion">
-                    ${product.original_price && product.price < product.original_price
-                        ? `<h3 class="product-original-price">${product.original_price} TL</h3>` : ''}
+                    <span class="price">${product.price}TL</span>
                     <p class="product-promotion">Farklı ürünlerde 3 al 2 öde</p>
                 </div>
 
@@ -152,7 +152,7 @@
                 max-width: 1200px;  
             }
             .banner-title {
-                font-size: 2rem;
+                font-size: 3rem;
                 font-family: 'Quicksand-Bold', sans-serif;
                 margin-bottom: 15px;
                 color: #f28e00;
@@ -269,6 +269,7 @@
                 color: #ffcf00; 
                 margin-bottom: 5px;
                 text-align: left;
+                font-size: 20px;
             }
             .product-original-price-promotion {
                 font-family: 'Poppins', sans-serif;
@@ -276,15 +277,16 @@
                 justify-content: flex-start;
                 flex-direction: column;
                 align-items: flex-start;
+                margin-top: -40px;
             }
             .product-original-price {
-                font-size: 14px; 
+                font-size: 12px; 
                 color: #7d7d7d; 
                 margin-right: 5px;
                 text-decoration: line-through;
                 display: inline-block; 
                 vertical-align: middle;
-                margin-top: 1px; 
+                margin-top: -2px; 
             }
             .product-promotion {
                 font-size: 10px;
@@ -293,13 +295,14 @@
                 border: none;
                 padding: 5px 10px;
                 border-radius: 20px; 
-                text-align: left; 
-                margin-top: 1px; 
+                text-align: left;
+                margin-left: -10px; 
+                margin-top: 10px;
             }
             .product-actions {
                 display: flex;
                 justify-content: space-between;
-                margin-top: auto; 
+                margin-top: 5px;
             }
             .discount-badge {
                 font-family: 'Poppins', sans-serif;
@@ -335,7 +338,8 @@
                 font-weight: 700;
                 display: inline-flex;
                 justify-content: center;
-                margin-left: -20px;
+                margin-left: -40px;
+                margin-top: -2px; 
             }
             .arrow-down {
                 font-size: 14px;
@@ -345,6 +349,7 @@
                 padding: 0 5px;
                 font-weight: bold;
                 margin-left: -2px;
+                margin-top: -2px; 
             }
             .add-to-cart-button {
                 background-color: #fff7ec; 
