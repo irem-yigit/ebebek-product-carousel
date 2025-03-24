@@ -1,4 +1,5 @@
 (() => {
+    // Initialize script and check home page
     const init = () => {
         if (window.location.pathname === "/" || window.location.pathname.includes("index.html")) {
             console.log('Home page detected');
@@ -8,6 +9,7 @@
         }
     };
 
+    // Load products and set up UI
     const loadProducts = async () => {
         const products = await getProductList();
         buildHTML(products);
@@ -15,6 +17,7 @@
         setEvents(products);
     };
     
+    // Fetch the product list from API
     const getProductList = async () => {
         let productList = localStorage.getItem('productList');
         try {
@@ -32,8 +35,9 @@
         }
     };
 
+    // Generate HTML structure
     const buildHTML = (products) => {
-
+        // Create the main banner container
         const bannerContainer = document.createElement('div');
         bannerContainer.id = 'banner-container';
         
@@ -63,33 +67,39 @@
         const productListContainer = document.createElement('div');
         productListContainer.classList.add('product-list');
         
+        // Create and append product cards
         products.forEach(product => {
             const productCard = createProductCard(product);
             carouselScrollable.appendChild(productCard);
         });
         bannerContainer.appendChild(carouselContainer);
     
+        // Insert the carousel after the hero banner
         const heroBanner = document.querySelector("eb-hero-banner-carousel");
         if (heroBanner) {
             heroBanner.insertAdjacentElement("afterend", bannerContainer);
         }
         return [bannerContainer];
     };
-    
+    // Create product card 
     const createProductCard = (product) => {
         const productCard = document.createElement('div');
         productCard.classList.add('product-card');
         productCard.dataset.productId = product.id;
 
+        //Calculate the discount amount
         let discountPercent = 0;
         if (product.original_price && product.price < product.original_price) {
             discountPercent = Math.round(((product.original_price - product.price) / product.original_price) * 100);
         }
     
+        // Generate product card HTML
         productCard.innerHTML = `
             <img src="${product.img}" class="product-image">
             <div class="product-details">
                 <p class="product-title"><span class="product-brand">${product.brand}</span> - ${product.name}</p>
+
+                <!-- Static 5-star rating -->
                 <div class="product-rating">
                     <span class="star">★</span>
                     <span class="star">★</span>
@@ -97,6 +107,8 @@
                     <span class="star">★</span>
                     <span class="star">★</span>
                 </div>
+
+                <!-- Display discount -->
                 <div class="discount-badge">
                     ${discountPercent > 0 
                         ? `<span class="price">${product.price}TL</span>
@@ -106,11 +118,15 @@
                            <span class="original-price">${product.original_price} TL</span>`
                         : `<span class="price">${product.price} TL</span>`}
                 </div>
+
+                <!-- Display original price and promotion -->
                 <div class="product-original-price-promotion">
                     ${product.original_price && product.price < product.original_price
                         ? `<h3 class="product-original-price">${product.original_price} TL</h3>` : ''}
                     <p class="product-promotion">Farklı ürünlerde 3 al 2 öde</p>
                 </div>
+
+                <!-- Action buttons: Add to cart & Favorite -->
                 <div class="product-actions">
                     <button class="add-to-cart-button">Sepete Ekle</button>
                     <button class="favorite-button">
@@ -124,6 +140,7 @@
         return productCard;
     };
     
+    // Apply CSS styles
     const buildCSS = () => {
         const style = document.createElement('style');
         style.textContent = `
@@ -186,6 +203,7 @@
                 display: flex;
                 justify-content: center; 
                 align-items: center;
+                transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
             }
             .carousel-button:hover {
                 box-shadow: 0 0 0 0 #00000030, inset 0 0 0 1px #f28e00;
@@ -204,7 +222,6 @@
             .product-card {
                 font-family: 'Poppins', sans-serif;
                 width: 200px;
-                padding: 5px;
                 background-color: #fff;
                 color: #7d7d7d;
                 border-radius: 8px;
@@ -235,7 +252,7 @@
                 display: flex;
                 flex-direction: column;
                 flex-grow: 1;
-                justify-content: space-between; /* Elementleri dikey olarak dağıt */
+                justify-content: space-between; 
                 height: 100%; 
             }
             .product-title {
@@ -516,7 +533,9 @@
         document.head.appendChild(style);
     };
     
+    // Add event listeners
     const setEvents = (products) => {
+        // Select all product cards
         document.querySelectorAll('.product-card').forEach(card => {
             const productId = parseInt(card.dataset.productId);
             const heartIcon = card.querySelector('.favorite-button');
@@ -536,7 +555,7 @@
                 window.open(product.url, '_blank');
             });
         });
-        // Carousel button event listener
+        // Select carousel elements
         const carouselScrollable = document.querySelector('.carousel-scrollable');
         const prevButton = document.querySelector('.carousel-button.prev');
         const nextButton = document.querySelector('.carousel-button.next');
@@ -546,15 +565,14 @@
         console.log('prevButton:', prevButton);
         console.log('nextButton:', nextButton);
 
+        // If the buttons and carousel are found, add event listeners
         if (prevButton && nextButton && carouselScrollable) {
             prevButton.addEventListener('click', () => {
-                carouselScrollable.scrollLeft -= productCardWidth;
-                behavior: 'smooth';
+                carouselScrollable.scrollBy({ left: -productCardWidth, behavior: 'smooth' });
             });
 
             nextButton.addEventListener('click', () => {
-                carouselScrollable.scrollLeft += productCardWidth;
-                behavior: 'smooth'
+                carouselScrollable.scrollBy({ left: productCardWidth, behavior: 'smooth' });
             });
         } else {
             console.error('No carousel buttons or carousel Scrollable found!');
@@ -562,6 +580,7 @@
         
     };
     
+    // Function to toggle favorite (add/remove)
     const toggleFavorite = (productId, heartIcon) => {
         let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
     
